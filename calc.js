@@ -41,7 +41,6 @@ const operators = document.querySelectorAll(".operator");
 operators.forEach(operator => operator.addEventListener("click", e => {
   let lastCharIndex = currentDisp.textContent.length - 1;
   let lastChar = currentDisp.textContent[lastCharIndex];
-  console.log(lastChar);
   const ops = ["+", "-", "/", "*"];
 
   if (ops.includes(lastChar)) {
@@ -79,8 +78,6 @@ equalsBtn.addEventListener("click", e => {
     // Update displays
     lastDisp.textContent = arithmetic;
     currentDisp.textContent = parseFloat(result.toFixed(5));
-    console.log(result);
-
   } else {
     console.error("Invalid input:", arithmetic);
     currentDisp.textContent = "Error: Invalid input";
