@@ -39,7 +39,17 @@ digits.forEach(digit => digit.addEventListener("click", e => {
 
 const operators = document.querySelectorAll(".operator");
 operators.forEach(operator => operator.addEventListener("click", e => {
-  currentDisp.textContent += `${operator.textContent}`;
+  let lastCharIndex = currentDisp.textContent.length - 1;
+  let lastChar = currentDisp.textContent[lastCharIndex];
+  console.log(lastChar);
+  const ops = ["+", "-", "/", "*"];
+
+  if (ops.includes(lastChar)) {
+    currentDisp.textContent = currentDisp.textContent.slice(0, lastCharIndex);
+    currentDisp.textContent += `${operator.textContent}`;
+  } else {
+    currentDisp.textContent += `${operator.textContent}`;
+  }
 }));
 
 const clearBtn = document.querySelector(".clear-btn");
@@ -55,19 +65,25 @@ delBtn.addEventListener("click", e => {
 
 const equalsBtn = document.querySelector("#equals");
 equalsBtn.addEventListener("click", e => {
-  const arithmetic = currentDisp.textContent;
-  const match = arithmetic.match(/^(\d+)([-+*/])(\d+)$/);
+  const arithmetic = currentDisp.textContent.trim();
+  const match = arithmetic.match(/^\s*(-?\d+(\.\d+)?)\s*([-+*/])\s*(-?\d+(\.\d+)?)\s*$/);
 
   if (match) {
-    const firstNumber = parseFloat(match[1]);
-    const operator = match[2];
-    const secondNumber = parseFloat(match[3]);
+    const firstNumber = parseFloat(match[1]); // Convert to number
+    const operator = match[3];               // Operator
+    const secondNumber = parseFloat(match[4]); // Convert to number
 
+    // Perform the operation
     const result = operate(operator, firstNumber, secondNumber);
 
+    // Update displays
     lastDisp.textContent = arithmetic;
-    currentDisp.textContent = result;
+    currentDisp.textContent = parseFloat(result.toFixed(5));
+    console.log(result);
+
   } else {
-    currentDisp.textContent = "Error: Invalid input"; // Handle invalid input
+    console.error("Invalid input:", arithmetic);
+    currentDisp.textContent = "Error: Invalid input";
   }
 });
+
